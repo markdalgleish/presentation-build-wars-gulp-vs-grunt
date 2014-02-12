@@ -1,0 +1,347 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
+    title Build Wars: Gulp vs Grunt
+
+    link(href='http://fonts.googleapis.com/css?family=Open+Sans:300,600', rel='stylesheet', type='text/css')
+
+    // build:css styles/styles.css
+    link(rel='stylesheet', type='text/css', href='bower_components/prism/themes/prism-twilight.css')
+    link(rel='stylesheet', type='text/css', href='styles/main.css')
+    // endbuild
+
+  body
+
+    article
+
+      section
+        h1 Build Wars
+        h3
+          a(href='https://twitter.com/markdalgleish') @markdalgleish
+        img.avatar.avatar--small(src='images/profile.jpg')
+
+      section.gif.gif--fight
+        h2 Gulp vs Grunt
+
+      section.light(data-bespoke-state='green')
+        h2 A brief history of Grunt
+
+      section
+        img.avatar(src='images/cowboy.jpg')
+        br
+        blockquote.
+          I realized that a task-based build tool with <strong>built-in, commonly used tasks</strong> was the approach that would work best for me
+        br
+        p
+          a(href='https://twitter.com/cowboy') Ben Alman
+          br
+          small March 2012
+
+      section
+        h3 Single, global Grunt:
+        pre.language-bash
+          code.
+            $ npm install -g grunt
+
+      section
+        h3 Configuration over code
+        pre.language-javascript
+          code.
+              grunt.initConfig({
+                lint: {
+                  src: 'src/&lt;%= pkg.name %&gt;.js'
+                },
+                concat: {
+                  src: [
+                    '&lt;banner:meta.banner&gt;',
+                    '&lt;file_strip_banner:src/&lt;%= pkg.name %&gt;.js&gt;'
+                  ],
+                  dest: '&lt;%= pkg.name %&gt;.js'
+                }
+              });
+
+      section
+        h3 Built-in init task to get you started
+        pre.language-bash
+          code.
+            $ grunt init jquery
+
+      section
+        h2.bullet Kitchen sink
+        ul
+          li init
+          li concat
+          li lint
+          li min
+          li qunit
+          li server
+          li test
+          li watch
+
+      section.light(data-bespoke-state='green')
+        h2.bullet Simple config
+        p.bullet Common build steps
+        p.bullet Designed for small libraries &amp; plugins
+
+      section.gif.gif--omg-grunt
+        h1 OMG GRUNT
+
+      section.gif.gif--omg-plugins
+        h1 OMG GRUNT PLUGINS
+
+      section.gif.gif--cowboy-reaction
+
+      section.light(data-bespoke-state='green')
+        h2.bullet What was wrong?
+        ul
+          li Global 'grunt' command...
+          li Upgrading Grunt could break older projects
+          li Your new project might not build on old Grunt versions
+          li Grunt was really only designed for small projects
+
+      section
+        h2.bullet Grunt v0.4
+        h3.bullet Released Feb 2013
+        ul
+          li grunt.js became Gruntfile.js
+          li 'init' task became 'grunt-init', inspired <a href="http://yeoman.io">Yeoman</a>
+          li Local Grunt install for each project
+          li Global 'grunt' command runs local Grunt
+          li Everything is a plugin, no built-in tasks
+
+      section.gif.gif--grunt-happy
+        h1
+          .bullet GRUNT 0.4
+          .bullet +
+          .bullet BOWER
+          .bullet +
+          .bullet YEOMAN
+
+      section.gif.gif--well-done
+
+      section.light.gif.gif--gulp(data-bespoke-state='green')
+        h1 A CHALLENGER APPEARS
+
+      section.logo.logo--gulp(data-bespoke-state='white')
+
+      section
+        ul
+          li Stream-based build system
+          li Code over configuration
+          li Small, idiomatic Node modules
+          li Really simple, elegant API
+
+      section
+        h2.bullet Basic Gulpfile
+        pre.bullet.language-javascript
+          code.
+            var gulp = require('gulp'),
+              stylus = require('gulp-stylus'),
+              autoprefixer = require('gulp-autoprefixer');
+        pre.bullet.language-javascript
+          code.
+            gulp.task('default', function() {
+              return gulp.src('src/styles/*.styl')
+                .pipe(stylus())
+                .pipe(autoprefixer())
+                .pipe(gulp.dest('public/styles'));
+            });
+
+      section
+        h2.bullet Gulp tasks run from terminal
+        pre.bullet.language-bash
+          $ gulp taskname
+
+      section
+        h2.bullet Streaming Builds
+        pre.bullet.language-javascript
+          code.
+            gulp.src('src/foobar.styl') // <-- Read from FS
+
+              // In memory transforms:
+              .pipe(stylus())
+              .pipe(rename({ ext: 'css' }))
+              .pipe(autoprefixer())
+              .pipe(cssmin())
+              .pipe(header('/* Copyright 2014 */'))
+
+              .pipe(gulp.dest('dist')) // <-- Write to FS
+
+      section.light(data-bespoke-state='green')
+        h2.bullet Streams?
+        p.bullet Read the <a href="https://github.com/substack/stream-handbook">Stream Handbook</a>
+        br
+        .bullet
+          img.avatar.avatar--small(src='images/substack.png')
+          br
+          h3
+            | by 
+            a(href='https://twitter.com/substack') @substack
+
+      section
+        img.avatar(src='images/maxogden.png')
+        br
+        blockquote.
+          best part about <a href="https://twitter.com/gulpjs">@gulpjs</a> is that people are writing generic, streaming node modules that have nothing to do w/ gulp except the module name :)
+        br
+        p
+          a(href='https://twitter.com/maxogden') @maxogden
+
+      section.gif.gif--gulp-api
+        h1.bullet LET'S LEARN THE GULP API
+        h2.bullet It's not too hard.
+
+      section
+        h2.bullet gulp.task
+        pre.bullet.language-javascript
+          code.
+            gulp.task('name', ['deps'], function(done) {
+
+              return stream || promise;
+              // ...or, call done()
+
+            });
+
+      section
+        h2.bullet gulp.watch
+        pre.bullet.language-javascript
+          code.
+            gulp.watch('src/**/*.js', ['test', 'compile']);
+
+      section
+        h2.bullet gulp.src
+        h3.bullet Returns a readable stream
+        pre.bullet.language-javascript
+          code.
+            gulp.src(['src/**/*.js', 'test/spec/**/*.js'])
+
+      section
+        h2.bullet gulp.dest
+        h3.bullet Returns a "through stream"
+        pre.bullet.language-javascript
+          code.
+            gulp.src('src')
+              .pipe(...)
+              .pipe(gulp.dest('dist'));
+        br
+        p.bullet Yes, that means you can keep piping!
+
+      section.gif.gif--thats-it
+        h2.bullet task, watch, src, dest
+        h1.bullet That's it.
+
+      section.light(data-bespoke-state='green')
+        h2 But...
+        h3 How do you run all the tasks sequentially?
+
+      section.gif.gif--wrong-question
+        h1 WRONG QUESTION
+
+      section.gif.gif--orchestrator
+        h2.bullet Gulp uses <a href="https://github.com/robrich/orchestrator">Orchestrator</a>
+        h3.bullet Just specify task dependencies
+        p.bullet Tasks run with maximum concurrency
+
+      section.light(data-bespoke-state='green')
+        h2 But...
+        h3 What's coming down the pipe?
+
+      section.gif.gif--vinyl
+        h1.bullet
+          a(href='https://github.com/wearefractal/vinyl') vinyl
+        h2.bullet Virtual file objects
+        h3.bullet Based on the <a href="https://github.com/node-task/spec/wiki/Record" class="black">Record</a> spec
+
+
+      section.gif.gif--anger
+        h1 USING GULP IN ANGER
+
+      section
+        h1.bullet <a href="https://github.com/markdalgleish/bespoke.js">Bespoke.js</a>
+        h3.bullet Now uses Gulp instead of Grunt
+        p.bullet Which caused me to write...
+
+      section
+        h1.bullet <a href="https://github.com/markdalgleish/gulp-coveralls">gulp-coveralls</a>
+        h3.bullet Submits unit test coverage to <a href="http://coveralls.io">coveralls.io</a>
+
+      section.light(data-bespoke-state='green')
+        h2 So...
+        h3 Is Gulp ready to replace Grunt?
+
+      section.gif.gif--no
+
+      section
+        h2.bullet Well, not unless you live on the bleeding edge
+        h3.bullet The ecosystem needs a bit more time to mature
+        p.bullet First things first...
+
+      section.gif.gif--omg-plugins
+        h1.bullet OMG GULP PLUGINS
+        h2.bullet 284 and counting...
+
+      section
+        img.avatar(src='images/sindresorhus.jpg')
+        br
+        blockquote.
+          Gulp is a new, fast &amp; light, streaming build system. While evaluating it for <a href="https://twitter.com/yeoman">@yeoman</a> I created some plugins for it: <a href="https://plus.google.com/+sindresorhus/posts/ebiZPMSxVf9">http://j.mp/1fnwFpv</a>
+        br
+        p
+          a(href='https://twitter.com/sindresorhus') @sindresorhus
+          br
+          small Dec 19, 2013
+
+      section
+        h1 Two weeks later...
+
+      section
+        img.avatar(src='images/sindresorhus.jpg')
+        br
+        blockquote.
+          26 <a href="https://twitter.com/gulpjs">@gulpjs</a> plugins done! <a href="https://github.com/search?l=&amp;o=desc&amp;p=1&amp;q=gulp+user%3Asindresorhus&amp;ref=advsearch&amp;s=updated&amp;type=Repositories">https://github.com/search?l=&amp;o=de…</a><br>for: <a href="https://twitter.com/search?q=%23reactjs&amp;src=hash">#reactjs</a>, mocha, webp, myth, traceur, recess, esformatter, jscs, ftp, tar, zip, &amp; more
+        br
+        p
+          a(href='https://twitter.com/sindresorhus') @sindresorhus
+          br
+          small Jan 2, 2014
+
+      section.light(data-bespoke-state='green')
+        h2 So...
+        h3 What's happening with Yeoman?
+
+      section
+        h3.bullet There's already an official generator for Gulp
+        h1.bullet <a href="https://github.com/yeoman/generator-gulp-webapp">generator-gulp-webapp</a>
+
+      section.gif.gif--gulp-is-awesome
+        h1.bullet THE YEOMAN TEAM AGREES
+        h2.bullet Gulp is awesome.
+        h3.bullet (I agree too)
+
+      section.gif.gif--future
+        h1.bullet THE FUTURE
+        ul
+          li <a href="https://github.com/node-task/spec/wiki">node-task</a> spec, will be supported by Gulp and Grunt
+          li <a href="https://github.com/gruntjs/grunt-next">Grunt 1.0 alpha</a> uses Orchestrator! (OMG)
+          li So what's the difference? <strong>Config vs code.</strong>
+
+      section
+        h1 Thank you!
+        h3
+          a(href='https://twitter.com/markdalgleish') @markdalgleish
+        img.avatar.avatar--small(src='images/profile.jpg')
+
+    // build:js scripts/scripts.js
+    script(src='bower_components/bespoke.js/dist/bespoke.min.js')
+    script(src='bower_components/bespoke-keys/dist/bespoke-keys.min.js')
+    script(src='bower_components/bespoke-touch/dist/bespoke-touch.min.js')
+    script(src='bower_components/bespoke-bullets/dist/bespoke-bullets.min.js')
+    script(src='bower_components/bespoke-scale/dist/bespoke-scale.min.js')
+    script(src='bower_components/bespoke-hash/dist/bespoke-hash.min.js')
+    script(src='bower_components/bespoke-progress/dist/bespoke-progress.min.js')
+    script(src='bower_components/bespoke-state/dist/bespoke-state.min.js')
+    script(src='bower_components/prism/prism.js')
+    script(src='scripts/main.js')
+    // endbuild

@@ -1,0 +1,292 @@
+@import 'nib' // CSS3 extensions for Stylus: http://visionmedia.github.io/nib/
+
+// variables!
+
+primary = #00F3A5
+
+slide_width = 640px
+slide_height = 480px
+slide_background = transparent
+
+slide_transition_length = .6s
+slide_transition_easing = ease
+slide_transition_rotate_y = 20deg
+// Safari bugs out on 3d transform-origins, so we have to fake it
+slide_transition_nudge_x = -640px
+
+bullet_transition_length = .3s
+bullet_transition_easing = ease
+
+spacer_gif = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
+
+// base
+
+*
+  box-sizing: border-box
+  margin: 0
+  padding: 0
+
+@media print
+  *
+    -webkit-print-color-adjust: exact
+
+@page
+  size: landscape
+  margin: 0
+
+// bespoke.js layout styles
+
+article
+  transition: all .3s ease
+  display: none
+  &.bespoke-parent
+    display: block
+    position: absolute
+    top: 0
+    bottom: 0
+    left: 0
+    right: 0
+    overflow: hidden
+    perspective: 600px
+    @media print
+      overflow: visible
+      position: static
+
+    &.green
+      background: primary
+    &.white
+      background: white
+
+.bespoke-slide
+  transition:
+    transform slide_transition_length slide_transition_easing,
+    opacity slide_transition_length slide_transition_easing,
+    background slide_transition_length slide_transition_easing
+  transform-origin: 50% 50% 0
+  transform: translate3d(0,0,0)
+  backface-visibility: hidden
+  display: flex
+  flex-direction: column
+  justify-content: center
+  align-items: center
+  text-align: center
+  width: slide_width
+  height: slide_height
+  position: absolute
+  top: 50%
+  margin-top: (slide_height / 2) * -1
+  left: 50%
+  margin-left: (slide_width / 2) * -1
+  background: slide_background
+  padding: 40px
+  border-radius: 0
+  @media print
+    zoom: 1 !important // disable bespoke-scale
+    height: 743px // seems to correspond with an A4, landscape page height
+    width: 100%
+    page-break-before: always
+    position: static
+    margin: 0
+
+.bespoke-before
+  transform: translateX(slide_transition_nudge_x * -1) translateX(slide_width / -2) rotateY(slide_transition_rotate_y * -1) translateX(slide_width / -2)
+
+.bespoke-after
+  transform: translateX(slide_transition_nudge_x) translateX(slide_width / 2) rotateY(slide_transition_rotate_y) translateX(slide_width / 2)
+  @media print
+    transform: none
+
+.bespoke-inactive
+  opacity: 0
+  pointer-events: none
+  @media print
+    opacity 1
+
+.bespoke-active
+  opacity: 1
+  transition-delay: .2s
+
+// bespoke-bullet styles
+
+.bespoke-bullet
+  transition: all bullet_transition_length bullet_transition_easing
+
+.bespoke-bullet-inactive
+  opacity: 0
+  li&
+    transform: translateX(-10px) translateZ(-10px) rotateY(20deg)
+  @media print
+    opacity: 1
+
+.bespoke-bullet-active
+  opacity: 1
+
+// bespoke-scale styles
+
+.bespoke-scale-parent
+  perspective: 600px
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  @media print
+    transform: none !important
+
+// bespoke-progress styles
+
+.bespoke-progress-parent
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  height: 5px
+  @media only screen and (min-width: 1366px)
+    height: 10px
+  @media print
+    display: none
+
+.bespoke-progress-bar
+  transition: width .6s ease
+  position: absolute
+  height: 100%
+  background: darken(primary, 20%)
+
+// bespoke-state styles
+
+.emphatic,
+.emphatic .bespoke-slide
+  background: slide_background
+
+// prism styles
+
+pre
+  padding: 26px !important
+  border-radius: 8px
+  border: none !important
+  box-shadow: none !important
+  span
+    text-shadow: none !important
+
+// content styles
+
+body
+  background: #303030
+  font-family: open sans, helvetica, arial, sans-serif
+  font-weight: 300
+  font-size: 18px
+  color: #f0f0f0
+  .gif
+    color: rgba(255,255,255,0.8)
+  .bespoke-slide.light
+    color: rgba(0,0,0,0.5)
+
+h1
+  font-size: 72px
+  font-weight: 600
+  line-height: 82px
+  letter-spacing: -2px
+  margin-bottom: 16px
+
+h2
+  font-weight: 300
+  font-size: 42px
+  letter-spacing: -1px
+  margin-bottom: 8px
+  color: #f0f0f0
+  .bespoke-slide.light &
+    color: rgba(0,0,0,0.6)
+
+h3
+  font-size: 24px
+  font-weight: 300
+  margin-bottom: 24px
+  color: #e0e0e0
+  .bespoke-slide.light &
+    color: rgba(0,0,0,0.5)
+
+hr
+  visibility: hidden
+  height: 20px
+
+ul
+  list-style: none
+
+li
+  margin-bottom: 12px
+
+p
+  margin: 0 100px 12px
+  line-height: 22px
+
+blockquote
+  max-width: 75%
+
+small
+  font-size: 50%
+
+a
+  color: primary
+  text-decoration: none
+  &.black
+    color: black
+  .bespoke-slide.light &
+    color: rgba(0,0,0,0.7)
+  .bespoke-slide.light h1 &
+    color: primary
+
+.avatar
+  display: block
+  margin: 0 auto
+  width: 120px
+  height: 120px
+  border-radius: 120px
+  &--small
+    width: 70px
+    height: 70px
+
+.logo
+  background-position: center
+  background-repeat: no-repeat
+  &--gulp
+    background-size: 25%
+    background-image: url(../images/gulp.png)
+
+.gif
+  background-size: cover
+  background-position: center
+  background-repeat: no-repeat
+  &--fight
+    background-image: url(../images/gif/fight.gif)
+  &--omg-grunt
+    background-image: url(../images/gif/yeaa.gif)
+  &--omg-plugins
+    background-image: url(../images/gif/bubbles.gif)
+  &--cowboy-reaction
+    background-image: url(../images/gif/demitri.gif)
+  &--grunt-happy
+    background-image: url(../images/gif/neverending.gif)
+  &--well-done
+    background-image: url(../images/gif/slowclap.gif)
+  &--gulp
+    background-image: url(../images/gif/ryu.gif)
+  &--gulp-api
+    background-image: url(../images/gif/clap.gif)
+  &--no
+    background-image: url(../images/gif/no.gif)
+  &--thats-it
+    background-image: url(../images/gif/shigeru.gif)
+  &--vinyl
+    background-image: url(../images/gif/vinyl.gif)
+  &--wrong-question
+    background-image: url(../images/gif/no-answer.gif)
+  &--orchestrator
+    background-image: url(../images/gif/conductor.gif)
+    background-size: 160%
+    background-position: 50% -220px
+  &--anger
+    background-image: url(../images/gif/angry-amy.gif)
+  &--gulp-is-awesome
+    background-image: url(../images/gif/anchorman.gif)
+  &--future
+    background-image: url(../images/gif/future.gif)
