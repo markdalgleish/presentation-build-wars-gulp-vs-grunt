@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Build Wars: Gulp vs Grunt</title>
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,600" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="styles/styles.css"/>
+  </head>
+  <body>
+    <article>
+      <section>
+        <h1>Build Wars</h1>
+        <h3><a href="https://twitter.com/markdalgleish">@markdalgleish</a></h3><img src="images/profile.jpg" class="avatar avatar--small">
+      </section>
+      <section class="gif gif--fight">
+        <h2>Gulp vs Grunt</h2>
+      </section>
+      <section data-bespoke-state="green" class="light">
+        <h2>A brief history of Grunt</h2>
+      </section>
+      <section><img src="images/cowboy.jpg" class="avatar"><br>
+        <blockquote>I realized that a task-based build tool with <strong>built-in, commonly used tasks</strong> was the approach that would work best for me</blockquote><br>
+        <p><a href="https://twitter.com/cowboy">Ben Alman</a><br><small>March 2012</small></p>
+      </section>
+      <section>
+        <h3>Single, global Grunt:</h3>
+        <pre class="language-bash"><code>$ npm install -g grunt
+</code></pre>
+      </section>
+      <section>
+        <h3>Configuration over code</h3>
+        <pre class="language-javascript"><code>grunt.initConfig({
+  lint: {
+    src: 'src/&lt;%= pkg.name %&gt;.js'
+  },
+  concat: {
+    src: [
+      '&lt;banner:meta.banner&gt;',
+      '&lt;file_strip_banner:src/&lt;%= pkg.name %&gt;.js&gt;'
+    ],
+    dest: '&lt;%= pkg.name %&gt;.js'
+  }
+});
+</code></pre>
+      </section>
+      <section>
+        <h3>Built-in init task to get you started</h3>
+        <pre class="language-bash"><code>$ grunt init jquery
+</code></pre>
+      </section>
+      <section>
+        <h2 class="bullet">Kitchen sink</h2>
+        <ul>
+          <li>init</li>
+          <li>concat</li>
+          <li>lint</li>
+          <li>min</li>
+          <li>qunit</li>
+          <li>server</li>
+          <li>test</li>
+          <li>watch</li>
+        </ul>
+      </section>
+      <section data-bespoke-state="green" class="light">
+        <h2 class="bullet">Simple config</h2>
+        <p class="bullet">Common build steps</p>
+        <p class="bullet">Designed for small libraries &amp; plugins</p>
+      </section>
+      <section class="gif gif--omg-grunt">
+        <h1>OMG GRUNT</h1>
+      </section>
+      <section class="gif gif--omg-plugins">
+        <h1>OMG GRUNT PLUGINS</h1>
+      </section>
+      <section class="gif gif--cowboy-reaction"></section>
+      <section data-bespoke-state="green" class="light">
+        <h2 class="bullet">What was wrong?</h2>
+        <ul>
+          <li>Global 'grunt' command...</li>
+          <li>Upgrading Grunt could break older projects</li>
+          <li>Your new project might not build on old Grunt versions</li>
+          <li>Grunt was really only designed for small projects</li>
+        </ul>
+      </section>
+      <section>
+        <h2 class="bullet">Grunt v0.4</h2>
+        <h3 class="bullet">Released Feb 2013</h3>
+        <ul>
+          <li>grunt.js became Gruntfile.js</li>
+          <li>'init' task became 'grunt-init', inspired <a href="http://yeoman.io">Yeoman</a></li>
+          <li>Local Grunt install for each project</li>
+          <li>Global 'grunt' command runs local Grunt</li>
+          <li>Everything is a plugin, no built-in tasks</li>
+        </ul>
+      </section>
+      <section class="gif gif--grunt-happy">
+        <h1>
+          <div class="bullet">GRUNT 0.4</div>
+          <div class="bullet">+</div>
+          <div class="bullet">BOWER</div>
+          <div class="bullet">+</div>
+          <div class="bullet">YEOMAN</div>
+        </h1>
+      </section>
+      <section class="gif gif--well-done"></section>
+      <section data-bespoke-state="green" class="light gif gif--gulp">
+        <h1>A CHALLENGER APPEARS</h1>
+      </section>
+      <section data-bespoke-state="white" class="logo logo--gulp"></section>
+      <section>
+        <ul>
+          <li>Stream-based build system</li>
+          <li>Code over configuration</li>
+          <li>Small, idiomatic Node modules</li>
+          <li>Really simple, elegant API</li>
+        </ul>
+      </section>
+      <section>
+        <h2 class="bullet">Basic Gulpfile</h2>
+        <pre class="bullet language-javascript"><code>var gulp = require('gulp'),
+  stylus = require('gulp-stylus'),
+  autoprefixer = require('gulp-autoprefixer');</code></pre>
+        <pre class="bullet language-javascript"><code>gulp.task('default', function() {
+  return gulp.src('src/styles/*.styl')
+    .pipe(stylus())
+    .pipe(autoprefixer())
+    .pipe(gulp.dest('public/styles'));
+});
+</code></pre>
+      </section>
+      <section>
+        <h2 class="bullet">Gulp tasks run from terminal</h2>
+        <pre class="bullet language-bash">$ gulp taskname</pre>
+      </section>
+      <section>
+        <h2 class="bullet">Streaming Builds</h2>
+        <pre class="bullet language-javascript"><code>gulp.src('src/foobar.styl') // <-- Read from FS
+
+  // In memory transforms:
+  .pipe(stylus())
+  .pipe(rename({ ext: 'css' }))
+  .pipe(autoprefixer())
+  .pipe(cssmin())
+  .pipe(header('/* Copyright 2014 */'))
+  
+  .pipe(gulp.dest('dist')) // <-- Write to FS
+  </code></pre>
+      </section>
+      <section data-bespoke-state="green" class="light">
+        <h2 class="bullet">Streams?</h2>
+        <p class="bullet">Read the <a href="https://github.com/substack/stream-handbook">Stream Handbook</a></p><br>
+        <div class="bullet"><img src="images/substack.png" class="avatar avatar--small"><br>
+          <h3>by <a href="https://twitter.com/substack">@substack</a></h3>
+        </div>
+      </section>
+      <section><img src="images/maxogden.png" class="avatar"><br>
+        <blockquote>best part about <a href="https://twitter.com/gulpjs">@gulpjs</a> is that people are writing generic, streaming node modules that have nothing to do w/ gulp except the module name :)</blockquote><br>
+        <p><a href="https://twitter.com/maxogden">@maxogden</a></p>
+      </section>
+      <section class="gif gif--gulp-api">
+        <h1 class="bullet">LET'S LEARN THE GULP API</h1>
+        <h2 class="bullet">It's not too hard.</h2>
+      </section>
+      <section>
+        <h2 class="bullet">gulp.task</h2>
+        <pre class="bullet language-javascript"><code>gulp.task('name', ['deps'], function(done) {
+
+  return stream || promise;
+  // ...or, call done()
+  
+});
+</code></pre>
+      </section>
+      <section>
+        <h2 class="bullet">gulp.watch</h2>
+        <pre class="bullet language-javascript"><code>gulp.watch('src/**/*.js', ['test', 'compile']);
+</code></pre>
+      </section>
+      <section>
+        <h2 class="bullet">gulp.src</h2>
+        <h3 class="bullet">Returns a readable stream</h3>
+        <pre class="bullet language-javascript"><code>gulp.src(['src/**/*.js', 'test/spec/**/*.js'])
+</code></pre>
+      </section>
+      <section>
+        <h2 class="bullet">gulp.dest</h2>
+        <h3 class="bullet">Returns a "through stream"</h3>
+        <pre class="bullet language-javascript"><code>gulp.src('src')
+  .pipe(...)
+  .pipe(gulp.dest('dist'));</code></pre><br>
+        <p class="bullet">Yes, that means you can keep piping!</p>
+      </section>
+      <section class="gif gif--thats-it">
+        <h2 class="bullet">task, watch, src, dest</h2>
+        <h1 class="bullet">That's it.</h1>
+      </section>
+      <section data-bespoke-state="green" class="light">
+        <h2>But...</h2>
+        <h3>How do you run all the tasks sequentially?</h3>
+      </section>
+      <section class="gif gif--wrong-question">
+        <h1>WRONG QUESTION</h1>
+      </section>
+      <section class="gif gif--orchestrator">
+        <h2 class="bullet">Gulp uses <a href="https://github.com/robrich/orchestrator">Orchestrator</a></h2>
+        <h3 class="bullet">Just specify task dependencies</h3>
+        <p class="bullet">Tasks run with maximum concurrency</p>
+      </section>
+      <section data-bespoke-state="green" class="light">
+        <h2>But...</h2>
+        <h3>What's coming down the pipe?</h3>
+      </section>
+      <section class="gif gif--vinyl">
+        <h1 class="bullet"><a href="https://github.com/wearefractal/vinyl">vinyl</a></h1>
+        <h2 class="bullet">Virtual file objects</h2>
+        <h3 class="bullet">Based on the <a href="https://github.com/node-task/spec/wiki/Record" class="black">Record</a> spec</h3>
+      </section>
+      <section class="gif gif--anger">
+        <h1>USING GULP IN ANGER</h1>
+      </section>
+      <section>
+        <h1 class="bullet"><a href="https://github.com/markdalgleish/bespoke.js">Bespoke.js</a></h1>
+        <h3 class="bullet">Now uses Gulp instead of Grunt</h3>
+        <p class="bullet">Which caused me to write...</p>
+      </section>
+      <section>
+        <h1 class="bullet"><a href="https://github.com/markdalgleish/gulp-coveralls">gulp-coveralls</a></h1>
+        <h3 class="bullet">Submits unit test coverage to <a href="http://coveralls.io">coveralls.io</a></h3>
+      </section>
+      <section data-bespoke-state="green" class="light">
+        <h2>So...</h2>
+        <h3>Is Gulp ready to replace Grunt?</h3>
+      </section>
+      <section class="gif gif--no"></section>
+      <section>
+        <h2 class="bullet">Well, not unless you live on the bleeding edge</h2>
+        <h3 class="bullet">The ecosystem needs a bit more time to mature</h3>
+        <p class="bullet">First things first...</p>
+      </section>
+      <section class="gif gif--omg-plugins">
+        <h1 class="bullet">OMG GULP PLUGINS</h1>
+        <h2 class="bullet">284 and counting...</h2>
+      </section>
+      <section><img src="images/sindresorhus.jpg" class="avatar"><br>
+        <blockquote>Gulp is a new, fast &amp; light, streaming build system. While evaluating it for <a href="https://twitter.com/yeoman">@yeoman</a> I created some plugins for it: <a href="https://plus.google.com/+sindresorhus/posts/ebiZPMSxVf9">http://j.mp/1fnwFpv</a></blockquote><br>
+        <p><a href="https://twitter.com/sindresorhus">@sindresorhus</a><br><small>Dec 19, 2013</small></p>
+      </section>
+      <section>
+        <h1>Two weeks later...</h1>
+      </section>
+      <section><img src="images/sindresorhus.jpg" class="avatar"><br>
+        <blockquote>26 <a href="https://twitter.com/gulpjs">@gulpjs</a> plugins done! <a href="https://github.com/search?l=&amp;o=desc&amp;p=1&amp;q=gulp+user%3Asindresorhus&amp;ref=advsearch&amp;s=updated&amp;type=Repositories">https://github.com/search?l=&amp;o=de…</a><br>for: <a href="https://twitter.com/search?q=%23reactjs&amp;src=hash">#reactjs</a>, mocha, webp, myth, traceur, recess, esformatter, jscs, ftp, tar, zip, &amp; more</blockquote><br>
+        <p><a href="https://twitter.com/sindresorhus">@sindresorhus</a><br><small>Jan 2, 2014</small></p>
+      </section>
+      <section data-bespoke-state="green" class="light">
+        <h2>So...</h2>
+        <h3>What's happening with Yeoman?</h3>
+      </section>
+      <section>
+        <h3 class="bullet">There's already an official generator for Gulp</h3>
+        <h1 class="bullet"><a href="https://github.com/yeoman/generator-gulp-webapp">generator-gulp-webapp</a></h1>
+      </section>
+      <section class="gif gif--gulp-is-awesome">
+        <h1 class="bullet">THE YEOMAN TEAM AGREES</h1>
+        <h2 class="bullet">Gulp is awesome.</h2>
+        <h3 class="bullet">(I agree too)</h3>
+      </section>
+      <section class="gif gif--future">
+        <h1 class="bullet">THE FUTURE</h1>
+        <ul>
+          <li><a href="https://github.com/node-task/spec/wiki">node-task</a> spec, will be supported by Gulp and Grunt</li>
+          <li><a href="https://github.com/gruntjs/grunt-next">Grunt 1.0 alpha</a> uses Orchestrator! (OMG)</li>
+          <li>So what's the difference? <strong>Config vs code.</strong></li>
+        </ul>
+      </section>
+      <section>
+        <h1>Thank you!</h1>
+        <h3><a href="https://twitter.com/markdalgleish">@markdalgleish</a></h3><img src="images/profile.jpg" class="avatar avatar--small">
+      </section>
+    </article>
+    <script src="scripts/scripts.js"></script>
+  </body>
+</html>
