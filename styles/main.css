@@ -202,6 +202,10 @@ li.bespoke-bullet-inactive {
   left: 0;
   right: 0;
   bottom: 0;
+  pointer-events: none;
+}
+.bespoke-scale-parent .bespoke-active {
+  pointer-events: auto;
 }
 @media print {
   .bespoke-scale-parent {
